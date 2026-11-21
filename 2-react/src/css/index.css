@@ -1,0 +1,249 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+/*
+ * Satu tema: langit Jakarta (lihat design-system/cuaca-jakarta/pages/home.md).
+ * Komponen hanya memakai nama token di bawah (bg-glass, text-text-3, text-icon-rain, …),
+ * tidak pernah hex inline. Kontras sudah dicek terhadap gradasi langit dan panel kaca:
+ * --text-2 di atas langit ≥ 5.7:1, --text-3 di atas panel kaca ≥ 6.2:1 (WCAG AA).
+ */
+:root {
+  --sky-top: #0e3557;
+  --sky-mid: #1b5583;
+  --sky-bottom: #2a6a9c;
+
+  --glass: rgb(6 24 43 / 0.38);
+  --glass-border: rgb(255 255 255 / 0.14);
+  --divider: rgb(255 255 255 / 0.1);
+  --skeleton: rgb(255 255 255 / 0.16);
+  --skeleton-soft: rgb(255 255 255 / 0.1);
+  --track: rgb(255 255 255 / 0.18);
+  --cloud-glow: rgb(255 255 255 / 0.2);
+  --glass-border-hover: rgb(255 255 255 / 0.26);
+  --row-hover: rgb(255 255 255 / 0.06);
+  --spotlight: rgb(255 255 255 / 0.1);
+  --rain-drop: rgb(186 230 253 / 0.38);
+  --sun-glow: rgb(252 211 77 / 0.22);
+  --flash: rgb(224 231 255 / 0.12);
+
+  --text: #ffffff;
+  --text-2: rgb(255 255 255 / 0.9);
+  --text-3: rgb(255 255 255 / 0.78);
+
+  --primary: #ffffff;
+  --primary-fg: #0e3557;
+  --focus: #fcd34d;
+
+  --temp-cool: #5eead4;
+  --temp-mild: #a3e635;
+  --temp-warm: #fcd34d;
+  --temp-hot: #fb923c;
+
+  --icon-rain: #7dd3fc;
+  --icon-cloud: #e2e8f0;
+  --icon-storm: #c4b5fd;
+  --icon-sun: #fcd34d;
+  --icon-fog: #cbd5e1;
+
+  --danger: #fca5a5;
+  --danger-soft: rgb(252 165 165 / 0.16);
+  --warning: #fcd34d;
+  --warning-soft: rgb(252 211 77 / 0.16);
+
+  --shadow-color: rgb(3 15 30 / 0.28);
+}
+
+@theme inline {
+  --color-sky-top: var(--sky-top);
+  --color-glass: var(--glass);
+  --color-glass-border: var(--glass-border);
+  --color-divider: var(--divider);
+  --color-skeleton: var(--skeleton);
+  --color-skeleton-soft: var(--skeleton-soft);
+  --color-track: var(--track);
+  --color-row-hover: var(--row-hover);
+  --color-glass-border-hover: var(--glass-border-hover);
+  --color-rain-drop: var(--rain-drop);
+
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-focus: var(--focus);
+
+  --color-temp-cool: var(--temp-cool);
+  --color-temp-mild: var(--temp-mild);
+  --color-temp-warm: var(--temp-warm);
+  --color-temp-hot: var(--temp-hot);
+
+  --color-icon-rain: var(--icon-rain);
+  --color-icon-cloud: var(--icon-cloud);
+  --color-icon-storm: var(--icon-storm);
+  --color-icon-sun: var(--icon-sun);
+  --color-icon-fog: var(--icon-fog);
+
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+}
+
+@theme {
+  --font-sans: "Inter Variable", "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-card: 20px;
+  --radius-control: 999px;
+
+  --shadow-card: 0 12px 40px var(--shadow-color);
+  --shadow-card-hover: 0 20px 56px var(--shadow-color);
+
+  /* Animasi "diam" (ambient). Semua dipakai lewat prefix motion-safe:. */
+  --animate-drift: drift 48s ease-in-out infinite alternate;
+  --animate-drift-reverse: drift 64s ease-in-out infinite alternate-reverse;
+  --animate-float: float 5s ease-in-out infinite;
+  --animate-rain: rain 1.2s linear infinite;
+  --animate-sun-pulse: sun-pulse 7s ease-in-out infinite;
+  --animate-flash: flash 11s ease-out infinite;
+
+  @keyframes drift {
+    from {
+      transform: translate3d(-5%, 0, 0);
+    }
+    to {
+      transform: translate3d(6%, 3%, 0);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  @keyframes rain {
+    from {
+      transform: translate3d(0, -15vh, 0);
+    }
+    to {
+      transform: translate3d(-40px, 115vh, 0);
+    }
+  }
+  @keyframes sun-pulse {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+  }
+  /* Kilat redup sesekali; tidak berkedip cepat (aman untuk fotosensitif: < 3 kali/detik). */
+  @keyframes flash {
+    0%,
+    90%,
+    100% {
+      opacity: 0;
+    }
+    92% {
+      opacity: 1;
+    }
+    95% {
+      opacity: 0.2;
+    }
+    97% {
+      opacity: 0.7;
+    }
+  }
+}
+
+/* Latar langit: gradasi tiga warna token. */
+@utility bg-sky {
+  background-image: linear-gradient(
+    180deg,
+    var(--sky-top) 0%,
+    var(--sky-mid) 45%,
+    var(--sky-bottom) 100%
+  );
+}
+
+/* Panel kaca: isi semi-opak tetap terbaca walau backdrop-filter tidak didukung. */
+@utility glass {
+  background-color: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+}
+
+/*
+ * Panel kaca yang bereaksi ke mouse: sedikit terangkat saat hover dan ada sorotan lembut yang
+ * mengikuti kursor (posisi lewat --mx / --my, diisi GlassPanel saat pointermove).
+ */
+@utility glass-interactive {
+  position: relative;
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms ease,
+    border-color 260ms ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 300ms ease;
+    background: radial-gradient(
+      260px circle at var(--mx, 50%) var(--my, 50%),
+      var(--spotlight),
+      transparent 70%
+    );
+  }
+
+  &:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--shadow-card-hover);
+  }
+  &:hover::before {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+}
+
+/* Awan samar dekoratif. */
+@utility cloud-glow {
+  background-image: radial-gradient(closest-side, var(--cloud-glow), transparent);
+}
+
+@utility sun-glow {
+  background-image: radial-gradient(closest-side, var(--sun-glow), transparent);
+}
+
+@utility storm-flash {
+  background-image: radial-gradient(ellipse at 70% 0%, var(--flash), transparent 60%);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: var(--sky-top);
+  }
+  body {
+    @apply min-h-dvh font-sans text-text antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
